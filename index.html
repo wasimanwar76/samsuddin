@@ -897,9 +897,9 @@
                     Email Address
                   </h5>
                   <a
-                    href="mailto:Eliashosen183@gmail.com"
+                    href="mailto:info@sumsuddintts.info"
                     class="text-brand-light hover:text-brand-blue transition-colors"
-                    >Eliashosen183@gmail.com</a
+                    >info@sumsuddintts.info</a
                   >
                 </div>
               </div>
@@ -928,66 +928,87 @@
             <h3 class="text-2xl font-bold text-gray-900 mb-6">
               Send us a Message
             </h3>
-            <form
-              onsubmit="
-                event.preventDefault();
-                alert(
-                  'Message feature is in demo mode. Please contact via Phone or Email.',
-                );
-              "
-              class="space-y-6"
-            >
+            <form id="contactForm" class="space-y-6">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2"
-                    >Full Name</label
-                  >
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Full Name
+                  </label>
                   <input
                     type="text"
+                    name="name"
+                    id="name"
                     required
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue transition-colors outline-none"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none"
                     placeholder="John Doe"
                   />
                 </div>
+
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2"
-                    >Phone Number</label
-                  >
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Phone Number
+                  </label>
                   <input
                     type="tel"
+                    name="phone"
+                    id="phone"
                     required
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue transition-colors outline-none"
+                    pattern="[0-9+ ]{8,15}"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none"
                     placeholder="+971 50 123 4567"
                   />
                 </div>
               </div>
+
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2"
-                  >Email Address</label
-                >
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address
+                </label>
                 <input
                   type="email"
+                  name="email"
+                  id="email"
                   required
-                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue transition-colors outline-none"
+                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none"
                   placeholder="john@example.com"
                 />
               </div>
+
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2"
-                  >Message</label
-                >
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Message
+                </label>
                 <textarea
                   rows="4"
+                  name="message"
+                  id="message"
                   required
-                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue transition-colors outline-none resize-none"
+                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none resize-none"
                   placeholder="How can we help you?"
                 ></textarea>
               </div>
+
+              <!-- Hidden Web3Forms Access Key -->
+              <input
+                type="hidden"
+                name="access_key"
+                value="359d6d26-2d89-4d01-94d7-3edecefde450"
+              />
+
+              <!-- Result Message -->
+              <p id="result" class="text-center text-sm font-medium mt-2"></p>
+
+              <!-- Submit Button -->
               <button
+                id="submitBtn"
                 type="submit"
-                class="w-full bg-brand-blue text-white py-4 rounded-lg font-bold hover:bg-blue-800 transition-colors shadow-lg"
+                class="w-full bg-brand-blue text-white py-4 rounded-lg font-bold hover:bg-blue-800 transition-colors shadow-lg flex justify-center items-center gap-2"
               >
-                Submit Request
+                <span id="btnText">Submit Request</span>
+                <span
+                  id="loader"
+                  class="hidden animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"
+                ></span>
               </button>
             </form>
           </div>
@@ -1124,10 +1145,10 @@
               <li class="flex items-center gap-3">
                 <i class="fa-solid fa-envelope text-brand-orange"></i>
                 <a
-                  href="mailto:Eliashosen183@gmail.com"
+                  href="mailto:info@sumsuddintts.info"
                   class="text-gray-400 text-sm hover:text-white transition-colors"
-                  >Eliashosen183@gmail.com</a
-                >
+                  >info@sumsuddintts.info
+                </a>
               </li>
             </ul>
           </div>
@@ -1216,6 +1237,89 @@
       document.querySelectorAll(".reveal").forEach((element) => {
         observer.observe(element);
       });
+
+      const form = document.getElementById("contactForm");
+      const result = document.getElementById("result");
+      const loader = document.getElementById("loader");
+      const btnText = document.getElementById("btnText");
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        // Extra Validation
+        const name = document.getElementById("name").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const message = document.getElementById("message").value.trim();
+
+        if (name.length < 3) {
+          showMessage("Please enter a valid name.", "error");
+          return;
+        }
+
+        if (!/^[0-9+ ]{8,15}$/.test(phone)) {
+          showMessage("Please enter a valid phone number.", "error");
+          return;
+        }
+
+        if (!/\S+@\S+\.\S+/.test(email)) {
+          showMessage("Please enter a valid email address.", "error");
+          return;
+        }
+
+        if (message.length < 10) {
+          showMessage(
+            "Message should be at least 10 characters long.",
+            "error",
+          );
+          return;
+        }
+
+        // Show Loader
+        loader.classList.remove("hidden");
+        btnText.textContent = "Sending...";
+        result.textContent = "";
+
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            showMessage(
+              "Your message has been sent successfully. We will contact you soon.",
+              "success",
+            );
+            form.reset();
+          } else {
+            showMessage(
+              "Failed to send message. Please try again later.",
+              "error",
+            );
+          }
+        } catch (error) {
+          showMessage(
+            "Something went wrong. Please check your internet connection.",
+            "error",
+          );
+        }
+
+        // Hide Loader
+        loader.classList.add("hidden");
+        btnText.textContent = "Submit Request";
+      });
+
+      function showMessage(message, type) {
+        result.textContent = message;
+        result.className =
+          "text-center text-sm font-medium mt-2 " +
+          (type === "success" ? "text-green-600" : "text-red-600");
+      }
     </script>
   </body>
 </html>
